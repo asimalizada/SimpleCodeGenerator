@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -32,7 +34,7 @@ namespace Generator
 
         #region Fields / Default Options
 
-        string entity, projectPath, dataAccessPath, businessPath, context, dataAccessAbstract, dataAccessConcrete, businessAbstract, businessConcrete;
+        string entity, projectPath, dataAccessPath, dataAccessNamespace, businessPath, businessNamespace, context, dataAccessAbstract, dataAccessConcrete, businessAbstract, businessConcrete;
         bool needSave;
 
         #endregion
@@ -45,7 +47,9 @@ namespace Generator
             entity = ConfigurationHelper.GetAppSetting("entity");
             projectPath = ConfigurationHelper.GetAppSetting("projectPath");
             dataAccessPath = ConfigurationHelper.GetAppSetting("dataAccessPath");
+            dataAccessNamespace = ConfigurationHelper.GetAppSetting("dataAccessNamespace");
             businessPath = ConfigurationHelper.GetAppSetting("businessPath");
+            businessNamespace = ConfigurationHelper.GetAppSetting("businessNamespace");
             context = ConfigurationHelper.GetAppSetting("context");
             dataAccessAbstract = ConfigurationHelper.GetAppSetting("dataAccessAbstract");
             dataAccessConcrete = ConfigurationHelper.GetAppSetting("dataAccessConcrete");
@@ -169,6 +173,23 @@ namespace Generator
             th5.Start();
             Thread.Sleep(thread);
 
+            var context = dpath + "\\Concrete\\" + tbxContext.Text.Trim() + "Context.cs";
+            var cresult = "";
+            if (File.Exists(context))
+            {
+                var file = File.ReadAllText(context);
+
+                var index = file.IndexOf("DbSets") + 7;
+                var tmp = file[index];
+
+                cresult = file.Insert(index, "\n\t\tpublic DbSet<" + entity + "> " + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }");
+            }
+            else
+            {
+                cresult = "using System.Data.Entity;\nusing Entities.Concrete;\n\nnamespace " + rns + "\n{\n\tpublic class " + tbxContext.Text + "Context\n\t{\n\t\t#region DbSets\n\n\t\tpublic DbSet<" + entity + "> "
+                            + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }\n\n\t\t#endregion\n\t}\n}";
+            }
+
             try
             {
                 lblOperations.Invoke(new MethodInvoker(delegate ()
@@ -178,14 +199,16 @@ namespace Generator
                     lblEntities.Text += entity + "\n";
                 }));
 
-                using (StreamWriter writer = File.CreateText(irpath))
-                    writer.Write(irresult);
-                using (StreamWriter writer2 = File.CreateText(rpath))
-                    writer2.Write(rresult);
-                using (StreamWriter writer2 = File.CreateText(spath))
-                    writer2.Write(sresult);
-                using (StreamWriter writer2 = File.CreateText(mpath))
-                    writer2.Write(mresult);
+                //using (StreamWriter writer = File.CreateText(irpath))
+                //    writer.Write(irresult);
+                //using (StreamWriter writer = File.CreateText(rpath))
+                //    writer.Write(rresult);
+                using (StreamWriter writer = File.CreateText(context))
+                    writer.Write(cresult);
+                //using (StreamWriter writer = File.CreateText(spath))
+                //    writer.Write(sresult);
+                //using (StreamWriter writer = File.CreateText(mpath))
+                //    writer.Write(mresult);
 
                 var th6 = new Thread(() =>
                 {
@@ -309,7 +332,9 @@ namespace Generator
             ConfigurationHelper.SetSetting("entity", tbxEntity.Text);
             ConfigurationHelper.SetSetting("projectPath", tbxProjectPath.Text);
             ConfigurationHelper.SetSetting("dataAccessPath", tbxDataAccessPath.Text);
+            ConfigurationHelper.SetSetting("dataAccessNamespace", tbxDataAccessNamespace.Text);
             ConfigurationHelper.SetSetting("businessPath", tbxBusinessPath.Text);
+            ConfigurationHelper.SetSetting("businessNamespace", tbxBusinessNamespace.Text);
             ConfigurationHelper.SetSetting("dataAccessAbstract", tbxDataAccessAbstract.Text);
             ConfigurationHelper.SetSetting("dataAccessConcrete", tbxDataAccessConcrete.Text);
             ConfigurationHelper.SetSetting("businessAbstract", tbxBusinessAbstract.Text);
@@ -350,8 +375,12 @@ namespace Generator
                 tbxProjectPath.Text = projectPath;
             if (dataAccessPath != "none")
                 tbxDataAccessPath.Text = dataAccessPath;
+            if (dataAccessNamespace != "none")
+                tbxDataAccessNamespace.Text = dataAccessNamespace;
             if (businessPath != "none")
                 tbxBusinessPath.Text = businessPath;
+            if (businessNamespace != "none")
+                tbxBusinessNamespace.Text = businessNamespace;
             if (context != "none")
                 tbxContext.Text = context;
             if (dataAccessAbstract != "none")

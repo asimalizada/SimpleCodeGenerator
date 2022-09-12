@@ -32,6 +32,8 @@
             this.btnMinimize = new FontAwesome.Sharp.IconButton();
             this.btnClose = new FontAwesome.Sharp.IconButton();
             this.panelContainer = new System.Windows.Forms.Panel();
+            this.lblEntities = new System.Windows.Forms.Label();
+            this.btnAdvancedMode = new FontAwesome.Sharp.IconButton();
             this.btnProjectPathFind = new FontAwesome.Sharp.IconButton();
             this.lblOperations = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -58,8 +60,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbxEntity = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnAdvancedMode = new FontAwesome.Sharp.IconButton();
-            this.lblEntities = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
             this.panelContainer.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -139,6 +139,32 @@
             this.panelContainer.Size = new System.Drawing.Size(1127, 706);
             this.panelContainer.TabIndex = 1;
             this.panelContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelHeader_MouseDown);
+            // 
+            // lblEntities
+            // 
+            this.lblEntities.AutoSize = true;
+            this.lblEntities.Font = new System.Drawing.Font("High Tower Text", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEntities.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblEntities.Location = new System.Drawing.Point(548, 374);
+            this.lblEntities.Name = "lblEntities";
+            this.lblEntities.Size = new System.Drawing.Size(0, 20);
+            this.lblEntities.TabIndex = 20;
+            // 
+            // btnAdvancedMode
+            // 
+            this.btnAdvancedMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdvancedMode.FlatAppearance.BorderSize = 0;
+            this.btnAdvancedMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdvancedMode.IconChar = FontAwesome.Sharp.IconChar.Check;
+            this.btnAdvancedMode.IconColor = System.Drawing.Color.Gainsboro;
+            this.btnAdvancedMode.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnAdvancedMode.IconSize = 28;
+            this.btnAdvancedMode.Location = new System.Drawing.Point(497, 172);
+            this.btnAdvancedMode.Name = "btnAdvancedMode";
+            this.btnAdvancedMode.Size = new System.Drawing.Size(30, 30);
+            this.btnAdvancedMode.TabIndex = 19;
+            this.btnAdvancedMode.UseVisualStyleBackColor = true;
+            this.btnAdvancedMode.Click += new System.EventHandler(this.btnAdvancedMode_Click);
             // 
             // btnProjectPathFind
             // 
@@ -501,32 +527,6 @@
             this.label1.Size = new System.Drawing.Size(60, 22);
             this.label1.TabIndex = 0;
             this.label1.Text = "Entity";
-            // 
-            // btnAdvancedMode
-            // 
-            this.btnAdvancedMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdvancedMode.FlatAppearance.BorderSize = 0;
-            this.btnAdvancedMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAdvancedMode.IconChar = FontAwesome.Sharp.IconChar.Check;
-            this.btnAdvancedMode.IconColor = System.Drawing.Color.Gainsboro;
-            this.btnAdvancedMode.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnAdvancedMode.IconSize = 28;
-            this.btnAdvancedMode.Location = new System.Drawing.Point(497, 172);
-            this.btnAdvancedMode.Name = "btnAdvancedMode";
-            this.btnAdvancedMode.Size = new System.Drawing.Size(30, 30);
-            this.btnAdvancedMode.TabIndex = 19;
-            this.btnAdvancedMode.UseVisualStyleBackColor = true;
-            this.btnAdvancedMode.Click += new System.EventHandler(this.btnAdvancedMode_Click);
-            // 
-            // lblEntities
-            // 
-            this.lblEntities.AutoSize = true;
-            this.lblEntities.Font = new System.Drawing.Font("High Tower Text", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEntities.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblEntities.Location = new System.Drawing.Point(548, 374);
-            this.lblEntities.Name = "lblEntities";
-            this.lblEntities.Size = new System.Drawing.Size(0, 20);
-            this.lblEntities.TabIndex = 20;
             // 
             // Generator
             // 
