@@ -71,6 +71,7 @@ namespace Generator
 
         private void Run()
         {
+            var thread = 200;
             var entity = GetEntity(tbxEntity.Text);
             var lentity = entity.Substring(0, 1).ToLower() + entity.Substring(1, entity.Length - 1);
             var fentity = "_" + lentity;
@@ -84,6 +85,7 @@ namespace Generator
                 WriteOperation("Helper strings created...");
             });
             th1.Start();
+            Thread.Sleep(thread);
 
             var irusings = CreateUsingStr(tbxDataAccessAbstract.Text.Trim());
             var rusings = CreateUsingStr(tbxDataAccessConcrete.Text.Trim());
@@ -95,6 +97,7 @@ namespace Generator
                 WriteOperation("Usings prepared...");
             });
             th2.Start();
+            Thread.Sleep(thread);
 
             var irns = tbxDataAccessNamespace.Text.Split(',')[0];
             var rns = tbxDataAccessNamespace.Text.Split(',')[1];
@@ -106,13 +109,14 @@ namespace Generator
                 WriteOperation("Namespaces figured out...");
             });
             th3.Start();
+            Thread.Sleep(thread);
 
             var dpath = tbxDataAccessPath.Text;
 
             var irresult = irusings + "\n\nnamespace " + irns + "\n{\n\tpublic interface " + irepo + " : IEntityRepository<" + entity + ">\n\t{\n\t}\n}\n";
 
-            var rresult = rusings + "\n\nnamespace " + rns + "\n{\n\tpublic class " + repo + " : EfEntityRepositoryBase<" + entity + "," + tbxContext.Text 
-                        + " Context>, I" + irepo + "\n\t{\n\t}\n}";
+            var rresult = rusings + "\n\nnamespace " + rns + "\n{\n\tpublic class " + repo + " : EfEntityRepositoryBase<" + entity + ", " + tbxContext.Text 
+                        + "Context>, " + irepo + "\n\t{\n\t}\n}";
 
             var irpath = dpath + "\\Abstract\\" + irepo + ".cs";
             var rpath = dpath + "\\Concrete\\" + repo + ".cs";
@@ -122,6 +126,7 @@ namespace Generator
                 WriteOperation("Data acces code finished...");
             });
             th4.Start();
+            Thread.Sleep(thread);
 
             var bpath = tbxBusinessPath.Text;
 
@@ -158,6 +163,7 @@ namespace Generator
                 WriteOperation("Business code finished...");
             });
             th5.Start();
+            Thread.Sleep(thread);
 
             try
             {
@@ -175,6 +181,7 @@ namespace Generator
                     WriteOperation("Operations finished successfully...");
                 });
                 th6.Start();
+                Thread.Sleep(thread);
             }
             catch (Exception ex)
             {
@@ -259,7 +266,7 @@ namespace Generator
                 tbxBusinessPath.Enabled = true;
                 tbxDataAccessNamespace.Enabled = true;
                 tbxBusinessNamespace.Enabled = true;
-                groupBox1.Enabled = true;
+                groupBox1.Visible = true;
             }
         }
 
@@ -375,7 +382,7 @@ namespace Generator
             tbxDataAccessNamespace.Text = "DataAccess.Abstract,DataAccess.Concrete";
             tbxBusinessNamespace.Text = "Business.Abstract,Busines.Concrete";
             tbxDataAccessAbstract.Text = "Core.DataAccess.Abstract,Entities.Concrete";
-            tbxDataAccessConcrete.Text = "Core.DataAccess.Concrete," + tbxDataAccessNamespace.Text.Split(',')[0];
+            tbxDataAccessConcrete.Text = "Core.DataAccess.Concrete," + tbxDataAccessNamespace.Text.Split(',')[0] + ",Entities.Concrete";
             tbxBusinessAbstract.Text = "Entities.Concrete,System,System.Collections.Generic";
             tbxBusinessConcrete.Text = tbxBusinessNamespace.Text.Split(',')[0] + "," + tbxDataAccessNamespace.Text.Split()[0] 
                                                                                         + ",Entities.Concrete,System,System.Collections.Generic";

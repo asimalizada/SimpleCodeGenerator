@@ -147,7 +147,7 @@
             this.btnProjectPathFind.IconColor = System.Drawing.Color.Gainsboro;
             this.btnProjectPathFind.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnProjectPathFind.IconSize = 28;
-            this.btnProjectPathFind.Location = new System.Drawing.Point(410, 103);
+            this.btnProjectPathFind.Location = new System.Drawing.Point(497, 103);
             this.btnProjectPathFind.Name = "btnProjectPathFind";
             this.btnProjectPathFind.Size = new System.Drawing.Size(30, 30);
             this.btnProjectPathFind.TabIndex = 18;
@@ -174,7 +174,6 @@
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Enabled = false;
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox1.Font = new System.Drawing.Font("High Tower Text", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Gainsboro;
@@ -184,6 +183,7 @@
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Usings";
+            this.groupBox1.Visible = false;
             // 
             // tbxBusinessConcrete
             // 
@@ -193,7 +193,7 @@
             this.tbxBusinessConcrete.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxBusinessConcrete.Location = new System.Drawing.Point(188, 249);
             this.tbxBusinessConcrete.Name = "tbxBusinessConcrete";
-            this.tbxBusinessConcrete.Size = new System.Drawing.Size(149, 24);
+            this.tbxBusinessConcrete.Size = new System.Drawing.Size(297, 24);
             this.tbxBusinessConcrete.TabIndex = 22;
             this.tbxBusinessConcrete.Text = "__________";
             this.tbxBusinessConcrete.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -209,7 +209,7 @@
             this.tbxBusinessAbstract.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxBusinessAbstract.Location = new System.Drawing.Point(188, 191);
             this.tbxBusinessAbstract.Name = "tbxBusinessAbstract";
-            this.tbxBusinessAbstract.Size = new System.Drawing.Size(149, 24);
+            this.tbxBusinessAbstract.Size = new System.Drawing.Size(297, 24);
             this.tbxBusinessAbstract.TabIndex = 21;
             this.tbxBusinessAbstract.Text = "__________";
             this.tbxBusinessAbstract.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -225,7 +225,7 @@
             this.tbxDataAccessConcrete.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxDataAccessConcrete.Location = new System.Drawing.Point(188, 127);
             this.tbxDataAccessConcrete.Name = "tbxDataAccessConcrete";
-            this.tbxDataAccessConcrete.Size = new System.Drawing.Size(149, 24);
+            this.tbxDataAccessConcrete.Size = new System.Drawing.Size(297, 24);
             this.tbxDataAccessConcrete.TabIndex = 20;
             this.tbxDataAccessConcrete.Text = "__________";
             this.tbxDataAccessConcrete.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -241,7 +241,7 @@
             this.tbxDataAccessAbstract.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxDataAccessAbstract.Location = new System.Drawing.Point(188, 64);
             this.tbxDataAccessAbstract.Name = "tbxDataAccessAbstract";
-            this.tbxDataAccessAbstract.Size = new System.Drawing.Size(149, 24);
+            this.tbxDataAccessAbstract.Size = new System.Drawing.Size(297, 24);
             this.tbxDataAccessAbstract.TabIndex = 19;
             this.tbxDataAccessAbstract.Text = "__________";
             this.tbxDataAccessAbstract.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -301,7 +301,7 @@
             this.tbxContext.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxContext.Location = new System.Drawing.Point(241, 425);
             this.tbxContext.Name = "tbxContext";
-            this.tbxContext.Size = new System.Drawing.Size(149, 24);
+            this.tbxContext.Size = new System.Drawing.Size(223, 24);
             this.tbxContext.TabIndex = 15;
             this.tbxContext.Text = "__________";
             this.tbxContext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -329,7 +329,7 @@
             this.tbxBusinessNamespace.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxBusinessNamespace.Location = new System.Drawing.Point(241, 360);
             this.tbxBusinessNamespace.Name = "tbxBusinessNamespace";
-            this.tbxBusinessNamespace.Size = new System.Drawing.Size(149, 24);
+            this.tbxBusinessNamespace.Size = new System.Drawing.Size(223, 24);
             this.tbxBusinessNamespace.TabIndex = 13;
             this.tbxBusinessNamespace.Text = "__________";
             this.tbxBusinessNamespace.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -346,7 +346,7 @@
             this.tbxDataAccessNamespace.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxDataAccessNamespace.Location = new System.Drawing.Point(241, 302);
             this.tbxDataAccessNamespace.Name = "tbxDataAccessNamespace";
-            this.tbxDataAccessNamespace.Size = new System.Drawing.Size(149, 24);
+            this.tbxDataAccessNamespace.Size = new System.Drawing.Size(223, 24);
             this.tbxDataAccessNamespace.TabIndex = 12;
             this.tbxDataAccessNamespace.Text = "__________";
             this.tbxDataAccessNamespace.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -399,7 +399,7 @@
             this.tbxBusinessPath.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxBusinessPath.Location = new System.Drawing.Point(241, 238);
             this.tbxBusinessPath.Name = "tbxBusinessPath";
-            this.tbxBusinessPath.Size = new System.Drawing.Size(149, 24);
+            this.tbxBusinessPath.Size = new System.Drawing.Size(223, 24);
             this.tbxBusinessPath.TabIndex = 7;
             this.tbxBusinessPath.Text = "__________";
             this.tbxBusinessPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -416,7 +416,7 @@
             this.tbxDataAccessPath.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxDataAccessPath.Location = new System.Drawing.Point(241, 175);
             this.tbxDataAccessPath.Name = "tbxDataAccessPath";
-            this.tbxDataAccessPath.Size = new System.Drawing.Size(149, 24);
+            this.tbxDataAccessPath.Size = new System.Drawing.Size(223, 24);
             this.tbxDataAccessPath.TabIndex = 6;
             this.tbxDataAccessPath.Text = "__________";
             this.tbxDataAccessPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -454,7 +454,7 @@
             this.tbxProjectPath.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxProjectPath.Location = new System.Drawing.Point(241, 108);
             this.tbxProjectPath.Name = "tbxProjectPath";
-            this.tbxProjectPath.Size = new System.Drawing.Size(149, 24);
+            this.tbxProjectPath.Size = new System.Drawing.Size(223, 24);
             this.tbxProjectPath.TabIndex = 3;
             this.tbxProjectPath.Text = "__________";
             this.tbxProjectPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -481,7 +481,7 @@
             this.tbxEntity.ForeColor = System.Drawing.Color.Gainsboro;
             this.tbxEntity.Location = new System.Drawing.Point(241, 42);
             this.tbxEntity.Name = "tbxEntity";
-            this.tbxEntity.Size = new System.Drawing.Size(149, 24);
+            this.tbxEntity.Size = new System.Drawing.Size(223, 24);
             this.tbxEntity.TabIndex = 1;
             this.tbxEntity.Text = "__________";
             this.tbxEntity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -509,7 +509,7 @@
             this.btnAdvancedMode.IconColor = System.Drawing.Color.Gainsboro;
             this.btnAdvancedMode.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnAdvancedMode.IconSize = 28;
-            this.btnAdvancedMode.Location = new System.Drawing.Point(410, 173);
+            this.btnAdvancedMode.Location = new System.Drawing.Point(497, 172);
             this.btnAdvancedMode.Name = "btnAdvancedMode";
             this.btnAdvancedMode.Size = new System.Drawing.Size(30, 30);
             this.btnAdvancedMode.TabIndex = 19;
