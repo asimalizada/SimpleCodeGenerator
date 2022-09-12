@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -71,6 +70,11 @@ namespace Generator
 
         private void Run()
         {
+            lblOperations.Invoke(new MethodInvoker(delegate ()
+            {
+                lblOperations.Text = "";
+            }));
+
             var thread = 200;
             var entity = GetEntity(tbxEntity.Text);
             var lentity = entity.Substring(0, 1).ToLower() + entity.Substring(1, entity.Length - 1);
@@ -82,7 +86,7 @@ namespace Generator
 
             var th1 = new Thread(() =>
             {
-                WriteOperation("Helper strings created...");
+                WriteOperation(entity + " :\nHelper strings created...");
             });
             th1.Start();
             Thread.Sleep(thread);
@@ -115,7 +119,7 @@ namespace Generator
 
             var irresult = irusings + "\n\nnamespace " + irns + "\n{\n\tpublic interface " + irepo + " : IEntityRepository<" + entity + ">\n\t{\n\t}\n}\n";
 
-            var rresult = rusings + "\n\nnamespace " + rns + "\n{\n\tpublic class " + repo + " : EfEntityRepositoryBase<" + entity + ", " + tbxContext.Text 
+            var rresult = rusings + "\n\nnamespace " + rns + "\n{\n\tpublic class " + repo + " : EfEntityRepositoryBase<" + entity + ", " + tbxContext.Text
                         + "Context>, " + irepo + "\n\t{\n\t}\n}";
 
             var irpath = dpath + "\\Abstract\\" + irepo + ".cs";
@@ -133,7 +137,7 @@ namespace Generator
             var spath = bpath + "\\Abstract\\" + service + ".cs";
             var mpath = bpath + "\\Concrete\\" + manager + ".cs";
 
-            var sresult = susings + "\n\nnamespace " + sns + "\n{\n\tpublic interface " 
+            var sresult = susings + "\n\nnamespace " + sns + "\n{\n\tpublic interface "
                          + service + "\n\t{\n\t\tvoid Add(" + entity + " " + lentity + ");\n"
                          + "\t\tvoid Update(" + entity + " " + lentity + ");\n"
                          + "\t\tvoid Delete(" + entity + " " + lentity + ");\n"
@@ -141,21 +145,21 @@ namespace Generator
                          + "\t\t" + entity + " Get(int id);\n"
                          + "\t\tList<" + entity + "> GetAll();\n\t}\n}";
 
-            var mresult = musings +  "\n\nnamespace " + mns + "\n{\n\tpublic class " + manager + " : " + service + "\n\t{\n"
+            var mresult = musings + "\n\nnamespace " + mns + "\n{\n\tpublic class " + manager + " : " + service + "\n\t{\n"
                      + "\t\tprivate readonly " + irepo + " " + fentity + "Repository;\n\n"
-                     + "\t\tpublic " + manager + "(" + irepo + " " + lentity + "Repository)\n\t\t{\n" 
+                     + "\t\tpublic " + manager + "(" + irepo + " " + lentity + "Repository)\n\t\t{\n"
                      + "\t\t\t" + fentity + "Repository = " + lentity + "Repository;\n\t\t}\n\n"
-                     + "\t\tpublic void Add(" + entity + " " + lentity + ")\n\t\t{\n" 
+                     + "\t\tpublic void Add(" + entity + " " + lentity + ")\n\t\t{\n"
                      + "\t\t\t" + fentity + "Repository.Add(" + lentity + ");\n\t\t}\n\n"
-                     + "\t\tpublic void Update(" + entity + " " + lentity + ")\n\t\t{\n" 
+                     + "\t\tpublic void Update(" + entity + " " + lentity + ")\n\t\t{\n"
                      + "\t\t\t" + fentity + "Repository.Update(" + lentity + ");\n\t\t}\n\n"
-                     + "\t\tpublic void Delete(" + entity + " " + lentity + ")\n\t\t{\n" 
+                     + "\t\tpublic void Delete(" + entity + " " + lentity + ")\n\t\t{\n"
                      + "\t\t\t" + fentity + "Repository.Add(" + lentity + ");\n\t\t}\n\n"
-                     + "\t\tpublic void DeleteAll()\n\t\t{\n" 
+                     + "\t\tpublic void DeleteAll()\n\t\t{\n"
                      + "\t\t\t" + fentity + "Repository.DeleteAll();\n\t\t}\n\n"
-                     + "\t\tpublic " + entity + " Get(int id)\n\t\t{\n" 
+                     + "\t\tpublic " + entity + " Get(int id)\n\t\t{\n"
                      + "\t\t\treturn " + fentity + "Repository.Get(x => x.Id == id);\n\t\t}\n\n"
-                     + "\t\tpublic List<" + entity + "> GetAll()\n\t\t{\n" 
+                     + "\t\tpublic List<" + entity + "> GetAll()\n\t\t{\n"
                      + "\t\t\treturn " + fentity + "Repository.GetAll();\n\t\t}\n\t}\n}";
 
             var th5 = new Thread(() =>
@@ -167,6 +171,13 @@ namespace Generator
 
             try
             {
+                lblOperations.Invoke(new MethodInvoker(delegate ()
+                {
+                    if (lblEntities.Text.Contains(entity))
+                        throw new Exception("Entity already generated.");
+                    lblEntities.Text += entity + "\n";
+                }));
+
                 using (StreamWriter writer = File.CreateText(irpath))
                     writer.Write(irresult);
                 using (StreamWriter writer2 = File.CreateText(rpath))
@@ -185,7 +196,7 @@ namespace Generator
             }
             catch (Exception ex)
             {
-                MessageBox.Show("We ran into a few problem : \n" + ex.Message, "System");
+                MessageBox.Show("We ran into a few problem : \n" + ex.Message, "System", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -201,7 +212,7 @@ namespace Generator
             switch (entity.Split().Length)
             {
                 case 1:
-                    result = entity.Substring(0,1).ToUpper() + entity.Substring(1, entity.Length - 1);
+                    result = entity.Substring(0, 1).ToUpper() + entity.Substring(1, entity.Length - 1);
                     break;
                 case 2:
                     result = entity.Split()[0].Substring(0, 1).ToUpper() + entity.Split()[0].Substring(1, entity.Split()[0].Length - 1) +
@@ -229,7 +240,7 @@ namespace Generator
         {
             var result = MessageBox.Show("Are you sure want to quit?", "System", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-            if(result == DialogResult.OK)
+            if (result == DialogResult.OK)
                 Application.Exit();
         }
 
@@ -239,7 +250,7 @@ namespace Generator
             {
                 var result = fbd.ShowDialog();
 
-                if(result == DialogResult.OK)
+                if (result == DialogResult.OK)
                 {
                     ReloadAllPaths(fbd.SelectedPath);
                 }
@@ -249,7 +260,7 @@ namespace Generator
         private void tbx_Enter(object sender, EventArgs e)
         {
             var tbx = (TextBox)sender;
-            if(tbx.Text == "__________")
+            if (tbx.Text == "__________")
                 tbx.Text = "";
         }
 
@@ -260,7 +271,7 @@ namespace Generator
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
-            if( result == DialogResult.Yes)
+            if (result == DialogResult.Yes)
             {
                 tbxDataAccessPath.Enabled = true;
                 tbxBusinessPath.Enabled = true;
@@ -281,8 +292,8 @@ namespace Generator
         {
             needSave = true;
             var tbx = (TextBox)sender;
-            
-            if(tbx.Text == entity | tbx.Text == projectPath | tbx.Text == dataAccessPath | tbx.Text == businessPath | tbx.Text == context 
+
+            if (tbx.Text == entity | tbx.Text == projectPath | tbx.Text == dataAccessPath | tbx.Text == businessPath | tbx.Text == context
                 | tbx.Text == dataAccessAbstract | tbx.Text == dataAccessConcrete | tbx.Text == businessAbstract | tbx.Text == businessConcrete)
                 needSave = false;
         }
@@ -325,31 +336,31 @@ namespace Generator
                 result = true;
             }
 
-            if(result)
+            if (result)
                 MessageBox.Show(msg, "System", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             return result;
         }
-        
+
         private void LoadAppOptions()
         {
-            if(entity != "none")
+            if (entity != "none")
                 tbxEntity.Text = entity;
             if (projectPath != "none")
                 tbxProjectPath.Text = projectPath;
-            if(dataAccessPath != "none")
+            if (dataAccessPath != "none")
                 tbxDataAccessPath.Text = dataAccessPath;
-            if(businessPath != "none")
+            if (businessPath != "none")
                 tbxBusinessPath.Text = businessPath;
-            if(context != "none") 
+            if (context != "none")
                 tbxContext.Text = context;
-            if(dataAccessAbstract != "none")
+            if (dataAccessAbstract != "none")
                 tbxDataAccessAbstract.Text = dataAccessAbstract;
-            if(dataAccessConcrete != "none")
+            if (dataAccessConcrete != "none")
                 tbxDataAccessConcrete.Text = dataAccessConcrete;
-            if(businessAbstract != "none")
+            if (businessAbstract != "none")
                 tbxBusinessAbstract.Text = businessAbstract;
-            if(businessConcrete != "none") 
+            if (businessConcrete != "none")
                 tbxBusinessConcrete.Text = businessConcrete;
         }
 
@@ -360,7 +371,7 @@ namespace Generator
                 lblOperations.Text += "\n" + txt;
             }));
         }
-        
+
         private string CreateUsingStr(string str)
         {
             var result = new List<string>();
@@ -384,7 +395,7 @@ namespace Generator
             tbxDataAccessAbstract.Text = "Core.DataAccess.Abstract,Entities.Concrete";
             tbxDataAccessConcrete.Text = "Core.DataAccess.Concrete," + tbxDataAccessNamespace.Text.Split(',')[0] + ",Entities.Concrete";
             tbxBusinessAbstract.Text = "Entities.Concrete,System,System.Collections.Generic";
-            tbxBusinessConcrete.Text = tbxBusinessNamespace.Text.Split(',')[0] + "," + tbxDataAccessNamespace.Text.Split()[0] 
+            tbxBusinessConcrete.Text = tbxBusinessNamespace.Text.Split(',')[0] + "," + tbxDataAccessNamespace.Text.Split()[0]
                                                                                         + ",Entities.Concrete,System,System.Collections.Generic";
         }
     }
