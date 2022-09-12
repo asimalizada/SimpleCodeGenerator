@@ -72,7 +72,7 @@ namespace Generator
             thMain.Start();
         }
 
-        private void Run()
+        private void Run() // Refactor this
         {
             lblOperations.Invoke(new MethodInvoker(delegate ()
             {
@@ -180,14 +180,26 @@ namespace Generator
                 var file = File.ReadAllText(context);
 
                 var index = file.IndexOf("DbSets") + 7;
-                var tmp = file[index];
 
-                cresult = file.Insert(index, "\n\t\tpublic DbSet<" + entity + "> " + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }");
+                file = file.Insert(index, "\n\t\tpublic DbSet<" + entity + "> " + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }");
+
+                var mindex = file.IndexOf("modelBuilder") + 22;
+
+                if(mindex == 21)
+                {
+                    var t = file[file.IndexOf("#endregion") + 11];
+                    file = file.Insert(file.IndexOf("#endregion") + 11, "\n\t\tprotected override void OnModelCreating(DbModelBuilder modelBuilder)\n\t\t{\n\n\t\t}\n");
+                }
+
+                mindex = file.IndexOf("modelBuilder") + 18;
+
+                cresult = file.Insert(mindex, "\t\t\tmodelBuilder.Configurations.Add(new " + entity + "Map());\n");
             }
             else
             {
                 cresult = "using System.Data.Entity;\nusing Entities.Concrete;\n\nnamespace " + rns + "\n{\n\tpublic class " + tbxContext.Text + "Context\n\t{\n\t\t#region DbSets\n\n\t\tpublic DbSet<" + entity + "> "
-                            + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }\n\n\t\t#endregion\n\t}\n}";
+                            + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }\n\n\t\t#endregion\n\n\t\tprotected override void OnModelCreating(DbModelBuilder modelBuilder)\n" 
+                            + "\t\t{\n\t\t\tmodelBuilder.Configurations.Add(new " + entity + "Map());\n\t\t}\n\t}\n}";
             }
 
             try

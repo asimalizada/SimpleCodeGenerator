@@ -135,7 +135,7 @@
     <Folder Include="Business\Abstract\" />
     <Folder Include="Business\Concrete\" />
     <Folder Include="DataAccess\Abstract\" />
-    <Folder Include="DataAccess\Concrete\" />
+    <Folder Include="DataAccess\Concrete\Mappings\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
