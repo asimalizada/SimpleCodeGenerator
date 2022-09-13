@@ -141,7 +141,10 @@ namespace Generator
             var spath = bpath + "\\Abstract\\" + service + ".cs";
             var mpath = bpath + "\\Concrete\\" + manager + ".cs";
 
-            var sresult = susings + "\n\nnamespace " + sns + "\n{\n\tpublic interface "
+            var sresult = "";
+            var mresult = "";
+             
+            sresult = susings + "\n\nnamespace " + sns + "\n{\n\tpublic interface "
                          + service + "\n\t{\n\t\tvoid Add(" + entity + " " + lentity + ");\n"
                          + "\t\tvoid Update(" + entity + " " + lentity + ");\n"
                          + "\t\tvoid Delete(" + entity + " " + lentity + ");\n"
@@ -149,7 +152,7 @@ namespace Generator
                          + "\t\t" + entity + " Get(int id);\n"
                          + "\t\tList<" + entity + "> GetAll();\n\t}\n}";
 
-            var mresult = musings + "\n\nnamespace " + mns + "\n{\n\tpublic class " + manager + " : " + service + "\n\t{\n"
+            mresult = musings + "\n\nnamespace " + mns + "\n{\n\tpublic class " + manager + " : " + service + "\n\t{\n"
                      + "\t\tprivate readonly " + irepo + " " + fentity + "Repository;\n\n"
                      + "\t\tpublic " + manager + "(" + irepo + " " + lentity + "Repository)\n\t\t{\n"
                      + "\t\t\t" + fentity + "Repository = " + lentity + "Repository;\n\t\t}\n\n"
@@ -179,28 +182,40 @@ namespace Generator
             {
                 var file = File.ReadAllText(context);
 
-                var index = file.IndexOf("DbSets") + 7;
-
-                file = file.Insert(index, "\n\t\tpublic DbSet<" + entity + "> " + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }");
-
-                var mindex = file.IndexOf("modelBuilder") + 22;
-
-                if(mindex == 21)
+                if(!file.Contains("<" + entity + ">"))
                 {
-                    var t = file[file.IndexOf("#endregion") + 11];
-                    file = file.Insert(file.IndexOf("#endregion") + 11, "\n\t\tprotected override void OnModelCreating(DbModelBuilder modelBuilder)\n\t\t{\n\n\t\t}\n");
+                    var index = file.IndexOf("DbSets") + 7;
+
+                    file = file.Insert(index, "\n\t\tpublic DbSet<" + entity + "> " + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }");
                 }
 
-                mindex = file.IndexOf("modelBuilder") + 18;
+                if(!file.Contains(entity + "Map"))
+                {
+                    var mindex = file.IndexOf("modelBuilder") + 22;
 
-                cresult = file.Insert(mindex, "\t\t\tmodelBuilder.Configurations.Add(new " + entity + "Map());\n");
+                    if (mindex == 21)
+                    {
+                        var t = file[file.IndexOf("#endregion") + 11];
+                        file = file.Insert(file.IndexOf("#endregion") + 11, "\n\t\tprotected override void OnModelCreating(DbModelBuilder modelBuilder)\n\t\t{\n\n\t\t}\n");
+                    }
+
+                    mindex = file.IndexOf("modelBuilder") + 18;
+
+                    cresult = file.Insert(mindex, "\t\t\tmodelBuilder.Configurations.Add(new " + entity + "Map());\n");
+                }
             }
             else
             {
                 cresult = "using System.Data.Entity;\nusing Entities.Concrete;\n\nnamespace " + rns + "\n{\n\tpublic class " + tbxContext.Text + "Context\n\t{\n\t\t#region DbSets\n\n\t\tpublic DbSet<" + entity + "> "
-                            + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }\n\n\t\t#endregion\n\n\t\tprotected override void OnModelCreating(DbModelBuilder modelBuilder)\n" 
+                            + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + " { get; set; }\n\n\t\t#endregion\n\n\t\tprotected override void OnModelCreating(DbModelBuilder modelBuilder)\n"
                             + "\t\t{\n\t\t\tmodelBuilder.Configurations.Add(new " + entity + "Map());\n\t\t}\n\t}\n}";
             }
+
+            var dmpath = dpath + "\\Mappings\\" + entity + "Map.cs";
+
+            var dmresult = "using Entities.Concrete;\nusing System.Data.Entity.ModelConfiguration;\n\nnamespace " + rns + ".Mappings\n{\n\tpublic class " + entity + "Map : EntityTypeConfiguration<" + entity + ">\n\t{\n"
+                         + "\t\tpublic " + entity + "Map()\n\t\t{\n\t\t\tToTable(\"" + PluralizationService.CreateService(CultureInfo.CurrentCulture).Pluralize(entity) + "\");\n\t\t\tHasKey(e => e.Id);\n"
+                         + "\t\t\tProperty(e => e.Id).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);\n\n" + CreateMapStr(GetEntityProperties(entity)) + "\t\t}\n\t}\n}";
 
             try
             {
@@ -215,8 +230,10 @@ namespace Generator
                 //    writer.Write(irresult);
                 //using (StreamWriter writer = File.CreateText(rpath))
                 //    writer.Write(rresult);
-                using (StreamWriter writer = File.CreateText(context))
-                    writer.Write(cresult);
+                //using (StreamWriter writer = File.CreateText(context))
+                //    writer.Write(cresult);
+                //using (StreamWriter writer = File.CreateText(dmpath))
+                //    writer.Write(dmresult);
                 //using (StreamWriter writer = File.CreateText(spath))
                 //    writer.Write(sresult);
                 //using (StreamWriter writer = File.CreateText(mpath))
@@ -438,6 +455,40 @@ namespace Generator
             tbxBusinessAbstract.Text = "Entities.Concrete,System,System.Collections.Generic";
             tbxBusinessConcrete.Text = tbxBusinessNamespace.Text.Split(',')[0] + "," + tbxDataAccessNamespace.Text.Split()[0]
                                                                                         + ",Entities.Concrete,System,System.Collections.Generic";
+        }
+
+        private List<string> GetEntityProperties(string entity)
+        {
+            var result = new List<string>();
+
+            var fileName = tbxProjectPath.Text + "\\Entities\\" + entity + ".cs";
+            if (!File.Exists(fileName))
+            {
+                MessageBox.Show("Entity not found, but map class was created with default codes.", "System", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return result;
+            }
+
+            var file = File.ReadAllLines(fileName);
+
+            foreach (var line in file)
+            {
+                if (line.Contains("get;"))
+                    result.Add(line.Trim().Split()[1] + " " + line.Trim().Split()[2]);
+            }
+
+            return result;
+        }
+
+        private string CreateMapStr(List<string> properties)
+        {
+            var result = "";
+
+            foreach (var property in properties)
+            {
+                result += "\t\t\tProperty(e => e." + property.Split()[1] + ").HasColumnName(\"" + property.Split()[1] + "\");\n";
+            }
+
+            return result;
         }
     }
 }

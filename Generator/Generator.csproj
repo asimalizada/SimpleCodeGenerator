@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="Entities\Test.cs" />
     <Compile Include="Generator.cs">
       <SubType>Form</SubType>
     </Compile>
