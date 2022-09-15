@@ -162,8 +162,8 @@ namespace Generator.Classes
 
         public Dictionary<string, string> BuildCode()
         {
-            var path = PPath + "\\Entities";
-            var epath = PPath + "\\Entities\\" + HelperStrings.Entity + ".cs";
+            var path = PPath + "\\Entities\\Concrete";
+            var epath = PPath + "\\Entities\\Concrete\\" + HelperStrings.Entity + ".cs";
             if (!Directory.Exists(path))
             {
                 MessageBox.Show("Entities folder was not found. Please, create this folder under your project path and try again", "System", MessageBoxButtons.OK, MessageBoxIcon.Error);
