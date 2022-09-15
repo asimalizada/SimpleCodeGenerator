@@ -130,7 +130,7 @@ namespace Generator.Classes
         {
             var result = new List<string>();
 
-            var fileName = PPath + "\\Entities\\" + entity + ".cs";
+            var fileName = PPath + "\\Entities\\Concrete\\" + entity + ".cs";
             if (!File.Exists(fileName))
             {
                 MessageBox.Show("Entity not found, but map class was created with default codes.", "System", MessageBoxButtons.OK, MessageBoxIcon.Information);

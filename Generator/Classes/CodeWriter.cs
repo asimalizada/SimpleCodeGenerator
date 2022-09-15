@@ -30,8 +30,15 @@ namespace Generator.Classes
 
         private void WriteToFile(string file, string content)
         {
-            using (var writer = new StreamWriter(file))
-                writer.Write(content);
+            try
+            {
+                using (var writer = new StreamWriter(file))
+                    writer.Write(content);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("We ran into a few problem : \n" + exception.Message, "System", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public bool Generate()
@@ -42,20 +49,13 @@ namespace Generator.Classes
             if (codes == null)
                 return false;
 
-            try
-            {
-                WriteToFile(IRPath, codes["irepo"]);
-                WriteToFile(RPath, codes["repo"]);
-                WriteToFile(CPath, codes["context"]);
-                WriteToFile(DMPath, codes["map"]);
-                WriteToFile(SPath, codes["service"]);
-                WriteToFile(MPath, codes["manager"]);
-            }
-            catch (Exception exception)
-            {
-                result = false;
-                MessageBox.Show("We ran into a few problem : \n" + exception.Message, "System", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            WriteToFile(IRPath, codes["irepo"]);
+            WriteToFile(RPath, codes["repo"]);
+            WriteToFile(CPath, codes["context"]);
+            WriteToFile(DMPath, codes["map"]);
+            WriteToFile(SPath, codes["service"]);
+            WriteToFile(MPath, codes["manager"]);
+
 
             return result;
         }
