@@ -41,7 +41,7 @@ namespace Generator.Classes
         public string GetRResult()
         {
             return HelperStrings.RUsings + "\n\nnamespace " + HelperStrings.RNS + "\n{\n\tpublic class " + HelperStrings.Repo + " : EfEntityRepositoryBase<"
-                        + HelperStrings.Entity + ", " + Context + "Context>, " + HelperStrings.IRepo + "\n\t{\n\t}\n}";
+                        + HelperStrings.Entity + ", " + Context + ">, " + HelperStrings.IRepo + "\n\t{\n\t}\n}";
         }
 
         public string GetSResult()
