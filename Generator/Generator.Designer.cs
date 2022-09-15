@@ -60,6 +60,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbxEntity = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnReloadPaths = new FontAwesome.Sharp.IconButton();
             this.panelHeader.SuspendLayout();
             this.panelContainer.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -113,6 +114,7 @@
             // 
             // panelContainer
             // 
+            this.panelContainer.Controls.Add(this.btnReloadPaths);
             this.panelContainer.Controls.Add(this.lblEntities);
             this.panelContainer.Controls.Add(this.btnAdvancedMode);
             this.panelContainer.Controls.Add(this.btnProjectPathFind);
@@ -528,6 +530,22 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Entity";
             // 
+            // btnReloadPaths
+            // 
+            this.btnReloadPaths.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReloadPaths.FlatAppearance.BorderSize = 0;
+            this.btnReloadPaths.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReloadPaths.IconChar = FontAwesome.Sharp.IconChar.Sync;
+            this.btnReloadPaths.IconColor = System.Drawing.Color.Gainsboro;
+            this.btnReloadPaths.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnReloadPaths.IconSize = 28;
+            this.btnReloadPaths.Location = new System.Drawing.Point(497, 235);
+            this.btnReloadPaths.Name = "btnReloadPaths";
+            this.btnReloadPaths.Size = new System.Drawing.Size(30, 30);
+            this.btnReloadPaths.TabIndex = 21;
+            this.btnReloadPaths.UseVisualStyleBackColor = true;
+            this.btnReloadPaths.Click += new System.EventHandler(this.btnReloadPaths_Click);
+            // 
             // Generator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -582,6 +600,7 @@
         private FontAwesome.Sharp.IconButton btnProjectPathFind;
         private FontAwesome.Sharp.IconButton btnAdvancedMode;
         private System.Windows.Forms.Label lblEntities;
+        private FontAwesome.Sharp.IconButton btnReloadPaths;
     }
 }
 
